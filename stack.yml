@@ -10,7 +10,7 @@ services:
       - nginx
 
   nginx:
-    image: nginx:latest
+    image: tcp_nginx:latest
     ports:
       - 9000:80
     networks:
@@ -21,8 +21,6 @@ services:
           - node.role==manager
       restart_policy: 
         condition: on-failure
-    volumes:
-      - /root/nginx_conf/:/etc/nginx/conf.d/
     depends_on:
       - go
 networks:
