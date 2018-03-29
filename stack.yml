@@ -1,0 +1,29 @@
+version: '3'
+services:
+  go:
+    image: vimagick/shadowsocks:latest
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+    networks:
+      - nginx
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 9000:80
+    networks:
+      - nginx
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy: 
+        condition: on-failure
+    volumes:
+      - /root/nginx_conf/:/etc/nginx/conf.d/
+    depends_on:
+      - go
+networks:
+  nginx:
