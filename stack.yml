@@ -10,7 +10,7 @@ services:
       - nginx
 
   nginx:
-    image: tcp_nginx:latest
+    image: alaien/nginx_tcp_stream:latest
     ports:
       - 9000:80
     networks:
@@ -23,5 +23,7 @@ services:
         condition: on-failure
     depends_on:
       - go
+    volumes:
+      - /root/nginx_conf/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
 networks:
   nginx:
