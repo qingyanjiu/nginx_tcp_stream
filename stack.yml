@@ -1,21 +1,24 @@
 version: '3'
 services:
   go:
-    image: vimagick/shadowsocks:latest
+    image: vimagick/shadowsocks
     deploy:
       mode: global
       restart_policy:
         condition: on-failure
+    environment:
+      - PASSWORD=123
     networks:
       - nginx
 
   nginx:
-    image: alaien/nginx_tcp_stream:latest
+    image: alaien/nginx_tcp_stream
     ports:
       - 9000:80
     networks:
       - nginx
     deploy:
+      mode: global
       placement:
         constraints:
           - node.role==manager
