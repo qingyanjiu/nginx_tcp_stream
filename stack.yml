@@ -1,5 +1,15 @@
-version: '3'
+version: '3.3'
 services:
+  viz:
+    image: bretfisher/visualizer
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "8080:8080"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
   go:
     image: vimagick/shadowsocks
     deploy:
@@ -26,7 +36,11 @@ services:
         condition: on-failure
     depends_on:
       - go
-    volumes:
-      - /root/nginx_conf/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+    configs:
+      - source: nginx_conf-1
+        target: /usr/local/nginx/conf/nginx.conf
 networks:
   nginx:
+configs:
+  nginx_conf-1:
+    file: ./nginx.conf
